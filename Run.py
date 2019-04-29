@@ -27,8 +27,8 @@ test_f1 = []
 for replicate in range(N):
 	for fold in range(K):
 		print("replicate: ", replicate, "fold: ", fold)
-		x_train, y_train = load_data("data/std_train_"+str(replicate)+"_"+str(fold)+".csv", dtype)
-		x_test, y_test = load_data("data/std_test_"+str(replicate)+"_"+str(fold)+".csv", dtype)
+		x_train, y_train = load_data("data/train.csv", dtype)
+		x_test, y_test = load_data("data/validation.csv", dtype)
 		pred_train, pred_test, loss_train, loss_test = trainPASNet(x_train, y_train, x_test, y_test, pathway_mask, \
 															In_Nodes, Pathway_Nodes, Hidden_Nodes, Out_Nodes, \
 															opt_lr, opt_l2, nEpochs, Dropout_Rates, optimizer = "Adam")
