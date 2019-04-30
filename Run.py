@@ -36,8 +36,8 @@ for replicate in range(N):
 		if torch.cuda.is_available():
 			pred_test = pred_test.cpu().detach()
 		###
-		np.savetxt("PASNet_pred_"+str(replicate)+"_"+str(fold)+".txt", pred_test.numpy(), delimiter = ",")
-		auc_te = auc(y_test, pred_test)
+		np.savetxt("PASNet_pred_"+str(replicate)+"_"+str(fold)+".txt", pred_test.detach().numpy(), delimiter = ",")
+		auc_te = auc(y_test, pred_test.detach())
 		f1_te = f1(y_test, pred_test)
 		print("AUC in Test: ", auc_te, "F1 in Test: ", f1_te)
 		test_auc.append(auc_te)
