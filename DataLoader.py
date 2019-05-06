@@ -23,8 +23,8 @@ def load_data(path, dtype):
 	'''
 	data = pd.read_csv(path)
 	
-	x = data.drop(["LTS_LABEL"], axis = 1).values
-	y = data.loc[:, ["LTS_LABEL"]].values
+	x = data.drop(["class"], axis = 1).values
+	y = data.loc[:, ["class"]].values
 	X = torch.from_numpy(x).type(dtype)
 	Y = torch.from_numpy(vectorized_label(y, 2)).type(dtype)
 	###if gpu is being used
