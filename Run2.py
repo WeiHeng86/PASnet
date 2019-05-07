@@ -9,7 +9,7 @@ from Train2 import trainPASNet
 
 dtype = torch.FloatTensor
 ''' Net Settings'''
-In_Nodes = 113438 ###number of SNPs
+In_Nodes = 113395 ###number of SNPs
 Gene_Nodes = 11145 ###number of genes
 Pathway_Nodes = 662 ###number of pathways
 Hidden_Nodes = 100 ###number of hidden nodes
@@ -48,7 +48,7 @@ for replicate in range(N):
 			pred_test = pred_test.cpu().detach()
 		###
 		pred_test = pred_test.cpu().detach()
-		np.savetxt("output/PASNet_p                                                                                                                                                              red_"+str(replicate)+"_"+str(i)+".txt", pred_test.numpy(), delimiter = ",")
+		np.savetxt("output/PASNet_pred_"+str(replicate)+"_"+str(i)+".txt", pred_test.detach().numpy(), delimiter = ",")
 		auc_te = auc(y_val, pred_test)
 		f1_te = f1(y_val, pred_test)
 		print("AUC in Test: ", auc_te, "F1 in Test: ", f1_te)
