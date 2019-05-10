@@ -9,17 +9,17 @@ from Train2 import trainPASNet
 
 dtype = torch.FloatTensor
 ''' Net Settings'''
-In_Nodes = 113395 ###number of SNPs
-Gene_Nodes = 11145 ###number of genes
-Pathway_Nodes = 662 ###number of pathways
+In_Nodes = 11491 ###number of SNPs
+Gene_Nodes = 1523###number of genes
+Pathway_Nodes = 303 ###number of pathways
 Hidden_Nodes = 100 ###number of hidden nodes
 Out_Nodes = 2 ###number of hidden nodes in the last hidden layer
 ''' Initialize '''
 nEpochs = 10000 ###for training 10000
 Dropout_Rates = [0.8, 0.8, 0.7] ###sub-network setup
 ''' load data  and pathway '''
-pathway_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/pathway-gene-mask.csv", dtype)
-gene_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/gene-snp-mask.csv", dtype)
+pathway_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/pathway_mask/pathway-gene-mask-1.csv", dtype)
+gene_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/gene_mask/gene-snp-mask-1.csv", dtype)
 
 N = 1 # number of repeated times
 K = 5 # number of folds
@@ -27,16 +27,18 @@ opt_lr = 1e-4
 opt_l2 = 3e-4
 test_auc = []
 test_f1 = []
-X_train, Y_train = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/train.csv", dtype)
-X_test, Y_test = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/validation.csv", dtype)
+#X_train, Y_train = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/train/train-1.csv", dtype)
+#X_test, Y_test = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/validation/validation-1.csv", dtype)
+
+X, Y = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/snp-data/snp-data-1.csv", dtype)
 
 for replicate in range(N):
 	i = 0
 	kf = KFold(n_splits=K)
-	for train_index, val_index in kf.split(X_train):
+	for train_index, val_index in kf.split(X):
 		print("replicate: ", replicate, "fold: ", i)
-		x_train, x_val = X_train[train_index,], X_train[val_index,]
-		y_train, y_val = Y_train[train_index,], Y_train[val_index,]
+		x_train, x_val = X[train_index,], X[val_index,]
+		y_train, y_val = Y[train_index,], Y[val_index,]
 		# x_train, y_train = load_data("data/train_"+str(replicate)+"_"+str(fold)+".csv", dtype)
 		# x_test, y_test = load_data("data/std_test_"+str(replicate)+"_"+str(fold)+".csv", dtype)
 
