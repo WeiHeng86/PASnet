@@ -9,17 +9,20 @@ from Train2 import trainPASNet
 
 dtype = torch.FloatTensor
 ''' Net Settings'''
-In_Nodes = 11491 ###number of SNPs
-Gene_Nodes = 1523###number of genes
-Pathway_Nodes = 303 ###number of pathways
+In_Nodes = 8383 ###number of SNPs
+Gene_Nodes = 748###number of genes
+Pathway_Nodes = 189 ###number of pathways
 Hidden_Nodes = 100 ###number of hidden nodes
 Out_Nodes = 2 ###number of hidden nodes in the last hidden layer
 ''' Initialize '''
 nEpochs = 10000 ###for training 10000
 Dropout_Rates = [0.8, 0.8, 0.7] ###sub-network setup
 ''' load data  and pathway '''
-pathway_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/pathway_mask/pathway-gene-mask-1.csv", dtype)
-gene_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/gene_mask/gene-snp-mask-1.csv", dtype)
+#pathway_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/pathway_mask/pathway-gene-mask-1.csv", dtype)
+#gene_mask = load_pathway("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/gene_mask/gene-snp-mask-1.csv", dtype)
+
+pathway_mask = load_pathway("/home/huan1388/Git/data_snp/chrom/pathway_mask/pathway-gene-mask-2.csv", dtype)
+gene_mask = load_pathway("/home/huan1388/Git/data_snp/chrom/gene_mask/gene-snp-mask-2.csv", dtype)
 
 N = 1 # number of repeated times
 K = 5 # number of folds
@@ -30,7 +33,8 @@ test_f1 = []
 #X_train, Y_train = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/train/train-1.csv", dtype)
 #X_test, Y_test = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/validation/validation-1.csv", dtype)
 
-X, Y = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/snp-data/snp-data-1.csv", dtype)
+#X, Y = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/snp-data/snp-data-2.csv", dtype)
+X, Y = load_data("/home/huan1388/Git/data_snp/chrom/snp-data/snp-data-2.csv", dtype)
 
 for replicate in range(N):
 	i = 0
@@ -50,7 +54,7 @@ for replicate in range(N):
 			pred_test = pred_test.cpu().detach()
 		###
 		pred_test = pred_test.cpu().detach()
-		np.savetxt("output/PASNet_pred_"+str(replicate)+"_"+str(i)+".txt", pred_test.detach().numpy(), delimiter = ",")
+		np.savetxt("output/PASNet_pred_"+str(replicate)+"_"+str(i)+"-2.txt", pred_test.detach().numpy(), delimiter = ",")
 		auc_te = auc(y_val, pred_test)
 		f1_te = f1(y_val, pred_test)
 		print("AUC in Test: ", auc_te, "F1 in Test: ", f1_te)
@@ -58,5 +62,5 @@ for replicate in range(N):
 		test_f1.append(f1_te)
 		i = i+1
 		
-np.savetxt("PASNet_AUC-1.txt", test_auc, delimiter = ",")
-np.savetxt("PASNet_F1-1.txt", test_f1, delimiter = ",")
+np.savetxt("PASNet_AUC-2.txt", test_auc, delimiter = ",")
+np.savetxt("PASNet_F1-2.txt", test_f1, delimiter = ",")
