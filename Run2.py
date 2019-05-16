@@ -58,5 +58,5 @@ for replicate in range(N):
 		test_f1.append(f1_te)
 		i = i+1
 		
-np.savetxt("PASNet_AUC.txt", test_auc, delimiter = ",")
-np.savetxt("PASNet_F1.txt", test_f1, delimiter = ",")
+np.savetxt("PASNet_AUC-1.txt", test_auc, delimiter = ",")
+np.savetxt("PASNet_F1-1.txt", test_f1, delimiter = ",")
