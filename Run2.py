@@ -1,11 +1,16 @@
 import numpy as np
 import torch
+import time
 from sklearn.model_selection import KFold
 
 from DataLoader import load_data, load_pathway
 from EvalFunc import auc, f1
 #from Train import trainPASNet
 from Train2 import trainPASNet
+
+
+##### Start Calculate Time #####################
+start = time.time()
 
 dtype = torch.FloatTensor
 ''' Net Settings'''
@@ -30,11 +35,14 @@ opt_lr = 1e-4
 opt_l2 = 3e-4
 test_auc = []
 test_f1 = []
-#X_train, Y_train = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/train/train-1.csv", dtype)
-#X_test, Y_test = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/validation/validation-1.csv", dtype)
+X_train, Y_train = load_data("/home/huan1388/Git/data_snp/chrom/train/train-2.csv", dtype)
+X_test, Y_test = load_data("/home/huan1388/Git/data_snp/chrom/validation/validation-2.csv", dtype)
 
 #X, Y = load_data("/home/outlier/u43/huan1388/Documents/Git/data_snp/chrom/snp-data/snp-data-2.csv", dtype)
 X, Y = load_data("/home/huan1388/Git/data_snp/chrom/snp-data/snp-data-2.csv", dtype)
+
+
+
 
 for replicate in range(N):
 	i = 0
@@ -46,7 +54,7 @@ for replicate in range(N):
 		# x_train, y_train = load_data("data/train_"+str(replicate)+"_"+str(fold)+".csv", dtype)
 		# x_test, y_test = load_data("data/std_test_"+str(replicate)+"_"+str(fold)+".csv", dtype)
 
-		pred_train, pred_test, loss_train, loss_test = trainPASNet(x_train, y_train, x_val, y_val, gene_mask, pathway_mask, \
+		pred_train, pred_test, loss_train, loss_test = trainPASNet(x_train, y_train, X_test, Y_test, gene_mask, pathway_mask, \
 															In_Nodes, Gene_Nodes, Pathway_Nodes, Hidden_Nodes, Out_Nodes, \
 															opt_lr, opt_l2, nEpochs, Dropout_Rates, optimizer = "Adam")
 		###if gpu is being used, transferring back to cpu
@@ -54,7 +62,7 @@ for replicate in range(N):
 			pred_test = pred_test.cpu().detach()
 		###
 		pred_test = pred_test.cpu().detach()
-		np.savetxt("output/PASNet_pred_"+str(replicate)+"_"+str(i)+"-2.txt", pred_test.detach().numpy(), delimiter = ",")
+		np.savetxt("PASNet_pred_"+str(replicate)+"_"+str(i)+"-2.txt", pred_test.detach().numpy(), delimiter = ",")
 		auc_te = auc(y_val, pred_test)
 		f1_te = f1(y_val, pred_test)
 		print("AUC in Test: ", auc_te, "F1 in Test: ", f1_te)
@@ -64,3 +72,6 @@ for replicate in range(N):
 		
 np.savetxt("PASNet_AUC-2.txt", test_auc, delimiter = ",")
 np.savetxt("PASNet_F1-2.txt", test_f1, delimiter = ",")
+
+end = time.time()
+print(end-start)
