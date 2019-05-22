@@ -1,13 +1,14 @@
 from DataLoader import load_data, load_pathway
-from Train import trainPASNet
+from Train2 import trainPASNet
 import torch
 import numpy as np
 
 
 
 ''' PASNet Settings'''
-In_Nodes = 4359 ###number of genes
-Pathway_Nodes = 574 ###number of pathways
+In_Nodes = 8383 ###number of SNPs
+Gene_Nodes = 748###number of genes
+Pathway_Nodes = 189 ###number of pathways
 Hidden_Nodes = 100 ###number of hidden nodes
 Out_Nodes = 2 ###one is for LTS, and the other is for non-LTS
 ''' Initial Settings for Empirical Search '''
@@ -18,10 +19,18 @@ nEpochs = 5000 ###for empirical search
 
 ''' load data and pathway '''
 dtype = torch.FloatTensor
-pathway_mask = load_pathway("data/gbm_binary_pathway_mask_reactome_574.csv", dtype)
+#pathway_mask = load_pathway("data/gbm_binary_pathway_mask_reactome_574.csv", dtype)
+pathway_mask = load_pathway("/home/huan1388/Git/data_snp/chrom/pathway_mask/pathway-gene-mask-2.csv", dtype)
+gene_mask = load_pathway("/home/huan1388/Git/data_snp/chrom/gene_mask/gene-snp-mask-2.csv", dtype)
+
+
 ###loaded data were split for empirical search only
-x_train, y_train = load_data("data/std_train.csv", dtype)
-x_valid, y_valid = load_data("data/std_valid.csv", dtype)
+#x_train, y_train = load_data("data/std_train.csv", dtype)
+#x_valid, y_valid = load_data("data/std_valid.csv", dtype)
+
+X_train, Y_train = load_data("/home/huan1388/Git/data_snp/chrom/train/train-2.csv", dtype)
+X_valid, Y_valid = load_data("/home/huan1388/Git/data_snp/chrom/validation/validation-2.csv", dtype)
+
 
 opt_l2 = 0
 opt_lr = 0
