@@ -31,8 +31,8 @@ gene_mask = load_pathway("/home/huan1388/Git/data_snp/chrom/gene_mask/gene-snp-m
 
 N = 1 # number of repeated times
 K = 5 # number of folds
-opt_lr = 1e-4
-opt_l2 = 3e-4
+opt_lr = 7e-4
+opt_l2 = 1e-3
 test_auc = []
 test_f1 = []
 X_train, Y_train = load_data("/home/huan1388/Git/data_snp/chrom/train/train-2.csv", dtype)
@@ -54,7 +54,7 @@ for replicate in range(N):
 		# x_train, y_train = load_data("data/train_"+str(replicate)+"_"+str(fold)+".csv", dtype)
 		# x_test, y_test = load_data("data/std_test_"+str(replicate)+"_"+str(fold)+".csv", dtype)
 
-		pred_train, pred_test, loss_train, loss_test = trainPASNet(x_train, y_train, X_test, Y_test, gene_mask, pathway_mask, \
+		pred_train, pred_test, loss_train, loss_test = trainPASNet(x_train, y_train, x_val, y_val, gene_mask, pathway_mask, \
 															In_Nodes, Gene_Nodes, Pathway_Nodes, Hidden_Nodes, Out_Nodes, \
 															opt_lr, opt_l2, nEpochs, Dropout_Rates, optimizer = "Adam")
 		###if gpu is being used, transferring back to cpu
