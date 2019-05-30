@@ -13,10 +13,10 @@ Pathway_Nodes = 574 ###number of pathways
 Hidden_Nodes = 100 ###number of hidden nodes
 Out_Nodes = 2 ###number of hidden nodes in the last hidden layer
 ''' Initialize '''
-nEpochs = 10000 ###for training
+nEpochs = 10 ###for training
 Dropout_Rates = [0.8, 0.7] ###sub-network setup
 ''' load data and pathway '''
-pathway_mask = load_pathway("data/gbm_binary_pathway_mask_reactome_574.csv", dtype)
+pathway_mask = load_pathway("PASnet/data/gbm_binary_pathway_mask_reactome_574.csv", dtype)
 
 N = 10 # number of repeated times
 K = 5 # number of folds
@@ -27,8 +27,8 @@ test_f1 = []
 for replicate in range(N):
 	for fold in range(K):
 		print("replicate: ", replicate, "fold: ", fold)
-		x_train, y_train = load_data("data/train.csv", dtype)
-		x_test, y_test = load_data("data/validation.csv", dtype)
+		x_train, y_train = load_data("PASnet/data/train.csv", dtype)
+		x_test, y_test = load_data("PASnet/data/validation.csv", dtype)
 		pred_train, pred_test, loss_train, loss_test = trainPASNet(x_train, y_train, x_test, y_test, pathway_mask, \
 															In_Nodes, Pathway_Nodes, Hidden_Nodes, Out_Nodes, \
 															opt_lr, opt_l2, nEpochs, Dropout_Rates, optimizer = "Adam")
