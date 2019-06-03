@@ -16,6 +16,17 @@ for train_index, test_index in kf.split(X):
     y_train, y_test = y[train_index], y[test_index]
 
 
+import torch
+
+x = torch.randn(3,2)
+y = torch.ones(3,2)
+z = torch.where((x>0)|(x<0.1),x,y)
+
+## torch.where(condition, x, y)
+## when condition is true, yield x, otherwise yield y
+torch.where((x>0)&(y>0.1),x,y)
+
+
 
 
 
